@@ -1,1 +1,8 @@
+#xbmc
 media-tv/xbmc webserver -udev pvr mysql
+
+#deluge
+net-p2p/deluge webinterface
+
+#proftpd
+net-ftp/proftpd -ssl authfile
