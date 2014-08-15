@@ -1,0 +1,7 @@
+#Calculate format=openrc path=/etc
+
++
++zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl -A /dev/sd?
++zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl -i /dev/sd?
++zabbix ALL=(ALL) NOPASSWD: /usr/bin/perl /etc/zabbix/scripts/nvidia.pl
++
