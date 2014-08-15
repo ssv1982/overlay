@@ -1,4 +1,4 @@
-# Calculate merge()!= path=/etc/zabbix/script chown=zabbix:zabbix chmod=500
+# Calculate path=/etc/zabbix/script chown=zabbix:zabbix chmod=500
 
 use nvidia::ml qw(:all);
  
