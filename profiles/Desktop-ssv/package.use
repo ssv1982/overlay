@@ -1,1 +1,1 @@
-#media-tv/xbmc webserver -udev pvr mysql
+media-tv/xbmc webserver -udev pvr mysql
