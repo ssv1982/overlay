@@ -1,0 +1,6 @@
+# Calculate comment=# append=after link=/usr/share/mc/mc.lib
+
+#?os_linux_shortname==Desktop-ssv#
+[terminal:screen-256color]
+copy=xterm
+#os_linux_shortname#
