@@ -47,7 +47,7 @@ src_compile() {
 }
 
 src_prepare(){
-<------>epatch "${FILESDIR}"/${PN}-1.59.patch
+    epatch "${FILESDIR}"/${PN}-1.59.patch
 }
 
 src_install() {
