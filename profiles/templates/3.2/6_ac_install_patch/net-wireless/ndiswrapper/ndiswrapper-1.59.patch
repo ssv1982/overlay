@@ -1,3 +1,5 @@
+# Calculate format=diff pkg(sys-kernel/calculate-sources)>=3.14&&pkg(sys-kernel/calculate-sources)<3.15&&merge(net-wireless/ndiswrapper)=1.59
+
 diff -aur ndiswrapper-1.59.old/driver/crt.c ndiswrapper-1.59.new/driver/crt.c
 --- ndiswrapper-1.59.old/driver/crt.c	2013-11-28 20:42:35.000000000 +0100
 +++ ndiswrapper-1.59.new/driver/crt.c	2014-04-11 20:39:22.384962602 +0200
