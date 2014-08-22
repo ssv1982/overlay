@@ -8,4 +8,4 @@ net-p2p/deluge webinterface
 net-ftp/proftpd -ssl authfile
 
 #zabbix
-net-analyzer/zabbix server postgres agent frontend -ipv6 snmp
+#net-analyzer/zabbix server postgres agent frontend -ipv6 snmp
