@@ -27,8 +27,8 @@ src_prepare() {
 
 src_configure() {
 	econf --prefix=/usr/ --enable-addons-with-dependencies\
-	--libdir=/usr/share/kodi/addons \
-	--datadir=/usr/share/kidi/addons
+	--libdir=/usr/share/xbmc/addons \
+	--datadir=/usr/share/xbmc/addons
 #	econf --enable-addons-with-dependencies
 }
 
