@@ -12,36 +12,11 @@ PYTHON_REQ_USE="sqlite"
 inherit eutils python-single-r1 multiprocessing autotools
 
 CODENAME="Helix"
-case ${PV} in
-9999)
-	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
-	inherit git-2
-	#SRC_URI="!java? ( mirror://gentoo/${P}-20130413-generated-addons.tar.xz )"
-	;;
-*_alpha*|*_beta*|*_rc*)
-	MY_PV="${CODENAME}_${PV#*_}"
-	MY_P="${PN}-${MY_PV}"
-	SRC_URI="https://github.com/xbmc/xbmc/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
-		!java? ( mirror://gentoo/${P}-generated-addons.tar.xz )"
-	KEYWORDS="~amd64 ~x86"
-	S=${WORKDIR}/${MY_P}
-	;;
-*|*_p*)
-	MY_PV=${PV/_p/_r}
-	MY_P="${PN}-${MY_PV}"
-	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz
-		http://mirrors.xbmc.org/releases/source/${MY_P}-generated-addons.tar.xz"
-	KEYWORDS="~amd64 ~x86"
+EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
+inherit git-2
 
-	S=${WORKDIR}/${PN}-
-	[[ ${PV} == *_p* ]] \
-		&& S+=${PV/_p/-${CODENAME}_r} \
-		|| S+=${MY_PV}
-	;;
-esac
-
-DESCRIPTION="XBMC is a free and open source media-player and entertainment hub"
-HOMEPAGE="http://xbmc.org/"
+DESCRIPTION="Kodi is a free and open source media-player and entertainment hub"
+HOMEPAGE="http://kodi.tv/"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -167,52 +142,7 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-9999-nomythtv.patch
-	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
-	# The mythtv patch touches configure.ac, so force a regen
-	rm -f configure
-
-	# some dirs ship generated autotools, some dont
-	multijob_init
-	local d
-	for d in $(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f) ; do
-		[[ -e ${d} ]] && continue
-		pushd ${d/%configure/.} >/dev/null || die
-		AT_NOELIBTOOLIZE="yes" AT_TOPLEVEL_EAUTORECONF="yes" \
-		multijob_child_init eautoreconf
-		popd >/dev/null
-	done
-	multijob_finish
-	elibtoolize
-
-	[[ ${PV} == "9999" ]] && emake -f codegenerator.mk
-
-	# Disable internal func checks as our USE/DEPEND
-	# stuff handles this just fine already #408395
-	export ac_cv_lib_avcodec_ff_vdpau_vc1_decode_picture=yes
-
-	local squish #290564
-	use altivec && squish="-DSQUISH_USE_ALTIVEC=1 -maltivec"
-	use sse && squish="-DSQUISH_USE_SSE=1 -msse"
-	use sse2 && squish="-DSQUISH_USE_SSE=2 -msse2"
-	sed -i \
-		-e '/^CXXFLAGS/{s:-D[^=]*=.::;s:-m[[:alnum:]]*::}' \
-		-e "1iCXXFLAGS += ${squish}" \
-		lib/libsquish/Makefile.in || die
-
-	# Fix XBMC's final version string showing as "exported"
-	# instead of the SVN revision number.
-	export HAVE_GIT=no GIT_REV=${EGIT_VERSION:-exported}
-
-	# avoid long delays when powerkit isn't running #348580
-	sed -i \
-		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
-		xbmc/linux/*.cpp || die
-
-	epatch_user #293109
-
-	# Tweak autotool timestamps to avoid regeneration
-	find . -type f -exec touch -r configure {} +
+    sh bootstrap
 }
 
 src_configure() {
@@ -268,41 +198,41 @@ src_configure() {
 
 src_install() {
 	default
-	rm "${ED}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}*
+#	rm "${ED}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}*
 
-	domenu tools/Linux/xbmc.desktop
+	domenu tools/Linux/kodi.desktop
 	newicon media/icon48x48.png xbmc.png
 
 	# Remove optional addons (platform specific and disabled by USE flag).
-	local disabled_addons=(
-		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
-		visualization.dxspectrum
-	)
-	use fishbmc  || disabled_addons+=( visualization.fishbmc )
-	use projectm || disabled_addons+=( visualization.{milkdrop,projectm} )
-	use rsxs     || disabled_addons+=( screensaver.rsxs.{euphoria,plasma,solarwinds} )
-	rm -rf "${disabled_addons[@]/#/${ED}/usr/share/xbmc/addons/}"
+#	local disabled_addons=(
+#		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
+#		visualization.dxspectrum
+#	)
+#	use fishbmc  || disabled_addons+=( visualization.fishbmc )
+#	use projectm || disabled_addons+=( visualization.{milkdrop,projectm} )
+#	use rsxs     || disabled_addons+=( screensaver.rsxs.{euphoria,plasma,solarwinds} )
+#	rm -rf "${disabled_addons[@]/#/${ED}/usr/share/xbmc/addons/}"
 
 	# Punt simplejson bundle, we use the system one anyway.
-	rm -rf "${ED}"/usr/share/xbmc/addons/script.module.simplejson/lib
+#	rm -rf "${ED}"/usr/share/xbmc/addons/script.module.simplejson/lib
 	# Remove fonconfig settings that are used only on MacOSX.
 	# Can't be patched upstream because they just find all files and install
 	# them into same structure like they have in git.
-	rm -rf "${ED}"/usr/share/xbmc/system/players/dvdplayer/etc
+#	rm -rf "${ED}"/usr/share/xbmc/system/players/dvdplayer/etc
 
 	# Replace bundled fonts with system ones
 	# teletext.ttf: unknown
 	# bold-caps.ttf: unknown
 	# roboto: roboto-bold, roboto-regular
 	# arial.ttf: font mashed from droid/roboto, not removed wrt bug#460514
-	rm -rf "${ED}"/usr/share/xbmc/addons/skin.confluence/fonts/Roboto-*
-	dosym /usr/share/fonts/roboto/Roboto-Regular.ttf \
-		/usr/share/xbmc/addons/skin.confluence/fonts/Roboto-Regular.ttf
-	dosym /usr/share/fonts/roboto/Roboto-Bold.ttf \
-		/usr/share/xbmc/addons/skin.confluence/fonts/Roboto-Bold.ttf
+#	rm -rf "${ED}"/usr/share/xbmc/addons/skin.confluence/fonts/Roboto-*
+#	dosym /usr/share/fonts/roboto/Roboto-Regular.ttf \
+#		/usr/share/xbmc/addons/skin.confluence/fonts/Roboto-Regular.ttf
+#	dosym /usr/share/fonts/roboto/Roboto-Bold.ttf \
+#		/usr/share/xbmc/addons/skin.confluence/fonts/Roboto-Bold.ttf
 
-	python_domodule tools/EventClients/lib/python/xbmcclient.py
-	python_newscript "tools/EventClients/Clients/Kodi Send/kodi-send.py" xbmc-send
+#	python_domodule tools/EventClients/lib/python/xbmcclient.py
+#	python_newscript "tools/EventClients/Clients/Kodi Send/kodi-send.py" xbmc-send
 }
 
 pkg_postinst() {
