@@ -161,7 +161,7 @@ src_configure() {
 		--disable-optimizations \
 #		--enable-external-libraries \
 		$(has_version 'media-video/libav' && echo "--enable-libav-compat") \
-		$(use_enable airplay) \
+#		$(use_enable airplay) \
 		$(use_enable avahi) \
 		$(use_enable bluray libbluray) \
 		$(use_enable caps libcap) \
@@ -172,7 +172,7 @@ src_configure() {
 		$(use_enable gles) \
 		$(use_enable goom) \
 #		--disable-hal \
-		$(use_enable joystick) \
+#		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable mysql) \
 		$(use_enable nfs) \
@@ -181,7 +181,7 @@ src_configure() {
 		$(use_enable projectm) \
 		$(use_enable pulseaudio pulse) \
 #		$(use_enable pvr mythtv) \
-		$(use_enable rsxs) \
+#		$(use_enable rsxs) \
 		$(use_enable rtmp) \
 		$(use_enable samba) \
 		$(use_enable sdl) \
