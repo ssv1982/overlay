@@ -1,6 +1,6 @@
 #xbmc
 media-tv/xbmc webserver -udev pvr mysql
-media-tv/kodi webserver -udev pvr mysql
+media-tv/kodi webserver -udev mysql
 
 #deluge
 net-p2p/deluge webinterface

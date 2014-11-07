@@ -20,7 +20,7 @@ HOMEPAGE="http://kodi.tv/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa altivec avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql nfs +opengl profile +projectm pulseaudio pvr +rsxs rtmp +samba +sdl sse sse2 sftp test udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
+IUSE="-airplay alsa altivec avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql nfs +opengl profile +projectm pulseaudio pvr +rsxs rtmp +samba +sdl sse sse2 sftp test udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
 REQUIRED_USE="
 	pvr? ( mysql )
 	rsxs? ( X )
@@ -147,21 +147,22 @@ src_prepare() {
 
 src_configure() {
 	# Disable documentation generation
-	export ac_cv_path_LATEX=no
+#	export ac_cv_path_LATEX=no
 	# Avoid help2man
-	export HELP2MAN=$(type -P help2man || echo true)
+#	export HELP2MAN=$(type -P help2man || echo true)
 	# No configure flage for this #403561
-	export ac_cv_lib_bluetooth_hci_devid=$(usex bluetooth)
+#	export ac_cv_lib_bluetooth_hci_devid=$(usex bluetooth)
 	# Requiring java is asine #434662
-	[[ ${PV} != "9999" ]] && export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
+#	[[ ${PV} != "9999" ]] && export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
 
 	econf \
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--disable-optimizations \
+		--disable-option-checking \
 #		--enable-external-libraries \
 		$(has_version 'media-video/libav' && echo "--enable-libav-compat") \
-#		$(use_enable airplay) \
+		$(use_enable airplay) \
 		$(use_enable avahi) \
 		$(use_enable bluray libbluray) \
 		$(use_enable caps libcap) \
@@ -172,7 +173,7 @@ src_configure() {
 		$(use_enable gles) \
 		$(use_enable goom) \
 #		--disable-hal \
-#		$(use_enable joystick) \
+		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable mysql) \
 		$(use_enable nfs) \
@@ -180,9 +181,10 @@ src_configure() {
 		$(use_enable profile profiling) \
 		$(use_enable projectm) \
 		$(use_enable pulseaudio pulse) \
-#		$(use_enable pvr mythtv) \
-#		$(use_enable rsxs) \
+		$(use_enable pvr mythtv) \
+		$(use_enable rsxs) \
 		$(use_enable rtmp) \
+		$(use !rtmp && echo "--enable-rtmp=no") \
 		$(use_enable samba) \
 		$(use_enable sdl) \
 		$(use_enable sftp ssh) \
@@ -204,14 +206,14 @@ src_install() {
 	newicon media/icon48x48.png xbmc.png
 
 	# Remove optional addons (platform specific and disabled by USE flag).
-#	local disabled_addons=(
-#		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
-#		visualization.dxspectrum
-#	)
-#	use fishbmc  || disabled_addons+=( visualization.fishbmc )
-#	use projectm || disabled_addons+=( visualization.{milkdrop,projectm} )
-#	use rsxs     || disabled_addons+=( screensaver.rsxs.{euphoria,plasma,solarwinds} )
-#	rm -rf "${disabled_addons[@]/#/${ED}/usr/share/xbmc/addons/}"
+	local disabled_addons=(
+		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
+		visualization.dxspectrum
+	)
+	use fishbmc  || disabled_addons+=( visualization.fishbmc )
+	use projectm || disabled_addons+=( visualization.{milkdrop,projectm} )
+	use rsxs     || disabled_addons+=( screensaver.rsxs.{euphoria,plasma,solarwinds} )
+	rm -rf "${disabled_addons[@]/#/${ED}/usr/share/kodi/addons/}"
 
 	# Punt simplejson bundle, we use the system one anyway.
 #	rm -rf "${ED}"/usr/share/xbmc/addons/script.module.simplejson/lib
