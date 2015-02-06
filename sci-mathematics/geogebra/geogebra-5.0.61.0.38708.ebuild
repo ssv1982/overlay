@@ -14,7 +14,7 @@ HOMEPAGE=http://www.geogebra.org/""
 
 SLOT="0"
 
-KEYWORDS="amd64"
+KEYWORDS="x86 amd64"
 
 #RDEPEND=">=virtual/jre-1.6.0"
 MY_PV=$(replace_version_separator 4 '-')
