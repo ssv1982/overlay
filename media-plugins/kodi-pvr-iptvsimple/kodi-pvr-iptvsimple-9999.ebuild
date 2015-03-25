@@ -15,7 +15,8 @@ LICENSE="GPL-2"
 SLOT="0"
 IUSE=""
 
-DEPEND="media-plugins/kodi-platform"
+DEPEND="media-plugins/kodi-platform
+		media-tv/kodi"
 #RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${PN}
