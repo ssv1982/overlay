@@ -6,17 +6,16 @@ EAPI="4"
 
 inherit git-2 autotools multilib
 
-EGIT_REPO_URI="https://github.com/xbmc/kodi-platform.git"
-DESCRIPTION="Kodi platform environment for compiling cmake binary addons"
-HOMEPAGE="https://github.com/xbmc/kodi-platform"
+EGIT_REPO_URI="https://github.com/Pulse-Eight/platform.git"
+DESCRIPTION="Platform support library used by libCEC and binary add-ons for Kodi"
+HOMEPAGE="https://github.com/Pulse-Eight/platform"
 SRC_URI=""
 KEYWORDS=""
 LICENSE="GPL-2"
 SLOT="0"
 IUSE=""
 
-DEPEND="media-tv/kodi
-		media-plugins/platform"
+DEPEND="media-tv/kodi"
 RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${PN}
