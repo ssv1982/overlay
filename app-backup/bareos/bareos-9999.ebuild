@@ -18,58 +18,57 @@ LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS=""
 IUSE="acl clientonly +director fastlz ipv6 logwatch mysql ndmp postgres python qt4
-		readline scsi-crypto sql-pooling +sqlite3 ssl static +storage-daemon tcpd
-		vim-syntax X cephfs glusterfs lmdb rados"
+                readline scsi-crypto sql-pooling +sqlite ssl static +storage-daemon tcpd
+                vim-syntax X cephfs glusterfs lmdb rados"
 
 DEPEND="
-	!app-backup/bacula
-	cephfs? ( sys-cluster/ceph )
-	rados? ( sys-cluster/ceph )
-	glusterfs? ( sys-cluster/glusterfs )
-	lmdb? ( dev-db/lmdb )
-	dev-libs/gmp
-	!clientonly? (
-		postgres? ( dev-db/postgresql[threads] )
-		mysql? ( virtual/mysql )
-		sqlite3? ( dev-db/sqlite:3 )
-		director? ( virtual/mta )
-	)
-	qt4? (
-		dev-qt/qtsvg:4
-		x11-libs/qwt:5
-	)
-	fastlz? ( dev-libs/bareos-fastlzlib )
-	logwatch? ( sys-apps/logwatch )
-	tcpd? ( sys-apps/tcp-wrappers )
-	readline? ( sys-libs/readline )
-	static? (
-		acl? ( virtual/acl[static-libs] )
-		sys-libs/zlib[static-libs]
-		dev-libs/lzo[static-libs]
-		sys-libs/ncurses[static-libs]
-		ssl? ( dev-libs/openssl[static-libs] )
-	)
-	!static? (
-		acl? ( virtual/acl )
-		dev-libs/lzo
-		ssl? ( dev-libs/openssl )
-		sys-libs/ncurses
-		sys-libs/zlib
-	)
-	python? ( ${PYTHON_DEPS} )
-	"
+        !app-backup/bacula
+        cephfs? ( sys-cluster/ceph )
+        rados? ( sys-cluster/ceph )
+        glusterfs? ( sys-cluster/glusterfs )
+        lmdb? ( dev-db/lmdb )
+        dev-libs/gmp:0
+        !clientonly? (
+                postgres? ( dev-db/postgresql:*[threads] )
+                mysql? ( virtual/mysql )
+                sqlite? ( dev-db/sqlite:3 )
+                director? ( virtual/mta )
+        )
+        qt4? (
+                dev-qt/qtsvg:4
+                x11-libs/qwt:5
+        )
+        fastlz? ( dev-libs/bareos-fastlzlib )
+        logwatch? ( sys-apps/logwatch )
+        tcpd? ( sys-apps/tcp-wrappers )
+        readline? ( sys-libs/readline:0 )
+        static? (
+                acl? ( virtual/acl[static-libs] )
+                sys-libs/zlib[static-libs]
+                dev-libs/lzo[static-libs]
+                sys-libs/ncurses[static-libs]
+                ssl? ( dev-libs/openssl:0[static-libs] )
+        )
+        !static? (
+                acl? ( virtual/acl )
+                dev-libs/lzo
+                ssl? ( dev-libs/openssl:0 )
+                sys-libs/ncurses
+                sys-libs/zlib
+        )
+        python? ( ${PYTHON_DEPS} )
+        "
 RDEPEND="${DEPEND}
-	!clientonly? (
-		storage-daemon? (
-			sys-block/mtx
-			app-arch/mt-st
-		)
-	)
-	vim-syntax? ( || ( app-editors/vim app-editors/gvim ) )"
+        !clientonly? (
+                storage-daemon? (
+                        sys-block/mtx
+                        app-arch/mt-st
+                )
+        )
+        vim-syntax? ( || ( app-editors/vim app-editors/gvim ) )"
 
 REQUIRED_USE="static? ( clientonly )
-	python? ( ${PYTHON_REQUIRED_USE} )"
-
+        python? ( ${PYTHON_REQUIRED_USE} )"
 S=${WORKDIR}/${PN}-Release-${PV}
 
 src_unpack() {
