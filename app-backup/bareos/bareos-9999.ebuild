@@ -1,10 +1,10 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-backup/bareos/bareos-14.2.1.ebuild,v 1.1 2014/11/19 00:38:54 mschiff Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-backup/bareos/bareos-14.2.1.ebuild,v 1.7 2015/05/05 16:03:52 mschiff Exp $
 
 EAPI="5"
 
-PYTHON_COMPAT=( python2_{6,7} )
+PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="threads"
 
 inherit eutils multilib python-single-r1 qt4-r2 user git-2
@@ -18,67 +18,69 @@ LICENSE="AGPL-3"
 SLOT="0"
 KEYWORDS=""
 IUSE="acl clientonly +director fastlz ipv6 logwatch mysql ndmp postgres python qt4
-                readline scsi-crypto sql-pooling +sqlite ssl static +storage-daemon tcpd
-                vim-syntax X cephfs glusterfs lmdb rados"
+		readline scsi-crypto sql-pooling +sqlite ssl static +storage-daemon tcpd
+		vim-syntax X cephfs glusterfs lmdb rados"
 
 DEPEND="
-        !app-backup/bacula
-        cephfs? ( sys-cluster/ceph )
-        rados? ( sys-cluster/ceph )
-        glusterfs? ( sys-cluster/glusterfs )
-        lmdb? ( dev-db/lmdb )
-        dev-libs/gmp:0
-        !clientonly? (
-                postgres? ( dev-db/postgresql:*[threads] )
-                mysql? ( virtual/mysql )
-                sqlite? ( dev-db/sqlite:3 )
-                director? ( virtual/mta )
-        )
-        qt4? (
-                dev-qt/qtsvg:4
-                x11-libs/qwt:5
-        )
-        fastlz? ( dev-libs/bareos-fastlzlib )
-        logwatch? ( sys-apps/logwatch )
-        tcpd? ( sys-apps/tcp-wrappers )
-        readline? ( sys-libs/readline:0 )
-        static? (
-                acl? ( virtual/acl[static-libs] )
-                sys-libs/zlib[static-libs]
-                dev-libs/lzo[static-libs]
-                sys-libs/ncurses[static-libs]
-                ssl? ( dev-libs/openssl:0[static-libs] )
-        )
-        !static? (
-                acl? ( virtual/acl )
-                dev-libs/lzo
-                ssl? ( dev-libs/openssl:0 )
-                sys-libs/ncurses
-                sys-libs/zlib
-        )
-        python? ( ${PYTHON_DEPS} )
-        "
+	!app-backup/bacula
+	cephfs? ( sys-cluster/ceph )
+	rados? ( sys-cluster/ceph )
+	glusterfs? ( sys-cluster/glusterfs )
+	lmdb? ( dev-db/lmdb )
+	dev-libs/gmp:0
+	!clientonly? (
+		postgres? ( dev-db/postgresql:*[threads] )
+		mysql? ( virtual/mysql )
+		sqlite? ( dev-db/sqlite:3 )
+		director? ( virtual/mta )
+	)
+	qt4? (
+		dev-qt/qtsvg:4
+		x11-libs/qwt:5
+	)
+	fastlz? ( dev-libs/bareos-fastlzlib )
+	logwatch? ( sys-apps/logwatch )
+	tcpd? ( sys-apps/tcp-wrappers )
+	readline? ( sys-libs/readline:0 )
+	static? (
+		acl? ( virtual/acl[static-libs] )
+		sys-libs/zlib[static-libs]
+		dev-libs/lzo[static-libs]
+		sys-libs/ncurses[static-libs]
+		ssl? ( dev-libs/openssl:0[static-libs] )
+	)
+	!static? (
+		acl? ( virtual/acl )
+		dev-libs/lzo
+		ssl? ( dev-libs/openssl:0 )
+		sys-libs/ncurses
+		sys-libs/zlib
+	)
+	python? ( ${PYTHON_DEPS} )
+	"
 RDEPEND="${DEPEND}
-        !clientonly? (
-                storage-daemon? (
-                        sys-block/mtx
-                        app-arch/mt-st
-                )
-        )
-        vim-syntax? ( || ( app-editors/vim app-editors/gvim ) )"
+	!clientonly? (
+		storage-daemon? (
+			sys-block/mtx
+			app-arch/mt-st
+		)
+	)
+	vim-syntax? ( || ( app-editors/vim app-editors/gvim ) )"
 
 REQUIRED_USE="static? ( clientonly )
-        python? ( ${PYTHON_REQUIRED_USE} )"
+	python? ( ${PYTHON_REQUIRED_USE} )"
+
 S=${WORKDIR}/${PN}-Release-${PV}
 
 src_unpack() {
-    git-2_src_unpack
+	git-2_src_unpack
 }
+
 
 pkg_setup() {
 	use mysql && export mydbtypes+="mysql"
 	use postgres && export mydbtypes+=" postgresql"
-	use sqlite3 && export mydbtypes+=" sqlite3"
+	use sqlite && export mydbtypes+=" sqlite"
 
 	# create the daemon group and user
 	if [ -z "$(egetent group bareos 2>/dev/null)" ]; then
@@ -168,8 +170,8 @@ src_configure() {
 		$(use_with postgres postgresql) \
 		$(use_with python) \
 		$(use_with readline) \
-		$(use_with sqlite3) \
-		$(use sqlite3 || echo "--without-sqlite3") \
+		$(use_with sqlite sqlite3) \
+		$(use sqlite || echo "--without-sqlite3") \
 		$(use_with ssl openssl) \
 		$(use_with tcpd tcp-wrappers) \
 		$(use_enable lmdb) \
@@ -183,8 +185,7 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF} \
 		--htmldir=/usr/share/doc/${PF}/html \
 		--with-pid-dir=/run/bareos \
-		--sysconfdir=/etc \
-		--with-confdir=/etc/bareos \
+		--sysconfdir=/etc/bareos \
 		--with-subsys-dir=/run/lock/subsys \
 		--with-working-dir=/var/lib/bareos \
 		--with-logdir=/var/log/bareos \
@@ -397,7 +398,7 @@ pkg_postinst() {
 		einfo
 	fi
 
-	if use sqlite3; then
+	if use sqlite; then
 		einfo
 		einfo "Be aware that Bareos does not officially support SQLite database."
 		einfo "Best use it only for a client-only installation. See Bug #445540."
