@@ -29,7 +29,7 @@ DEPEND="
 	lmdb? ( dev-db/lmdb )
 	dev-libs/gmp
 	!clientonly? (
-		postgres? ( virtual/postgresql[threads] )
+		postgres? ( dev-db/postgresql[threads] )
 		mysql? ( virtual/mysql )
 		sqlite3? ( dev-db/sqlite:3 )
 		director? ( virtual/mta )
