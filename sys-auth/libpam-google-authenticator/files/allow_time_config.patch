@@ -1,0 +1,65 @@
+From ab2b4ba85e417eb0b4a497da84cd31b7e4a2bbe8 Mon Sep 17 00:00:00 2001
+From: Brian Ristuccia <brian@ristuccia.com>
+Date: Tue, 14 Aug 2012 11:42:55 -0400
+Subject: [PATCH] Add configuration option for TOTP time step size. Previously the time step
+ was hardcoded to 30 seconds, which is now the default.
+
+---
+ libpam/FILEFORMAT                 |    2 ++
+ libpam/pam_google_authenticator.c |   19 ++++++++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/libpam/FILEFORMAT b/libpam/FILEFORMAT
+index 0f0ad8a..b267b68 100644
+--- a/libpam/FILEFORMAT
++++ b/libpam/FILEFORMAT
+@@ -54,6 +54,8 @@ Currently, the following options are recognized:
+     for most users as invalid login attempts and generated-but-not-used
+     tokens both contribute to synchronization problems.
+ 
++  TIME_STEP_SIZE n
++    the default value time step size is 30 seconds.
+ 
+ Any all-numeric sequence of eight-digit numbers are randomly generated
+ one-time tokens. The user can enter any arbitrary one-time code
+diff --git a/libpam/pam_google_authenticator.c b/libpam/pam_google_authenticator.c
+index 159e89e..e8dd5ab 100644
+--- a/libpam/pam_google_authenticator.c
++++ b/libpam/pam_google_authenticator.c
+@@ -502,8 +502,8 @@ static time_t get_time(void) {
+ }
+ #endif
+ 
+-static int get_timestamp(void) {
+-  return get_time()/30;
++static int get_timestamp(int step_size) {
++  return get_time()/step_size;
+ }
+ 
+ static int comparator(const void *a, const void *b) {
+@@ -1160,8 +1160,21 @@ static int check_timebased_code(pam_handle_t *pamh, const char*secret_filename,
+     return 1;
+   }
+ 
++  const char *step_size_str = get_cfg_value(pamh, "TIME_STEP_SIZE", *buf);
++  if (step_size_str == &oom) {
++    // Out of memory. This is a fatal error
++    return -1;
++  }
++  
++  // Default step size of 30s
++  int step_size = 30;
++  if (step_size_str) {
++    step_size = (int)strtol(step_size_str, NULL, 10);
++  }
++  free((void *)step_size_str);
++  
+   // Compute verification codes and compare them with user input
+-  const int tm = get_timestamp();
++  const int tm = get_timestamp(step_size);
+   const char *skew_str = get_cfg_value(pamh, "TIME_SKEW", *buf);
+   if (skew_str == &oom) {
+     // Out of memory. This is a fatal error
+-- 
+1.7.2.5
+
