@@ -1,9 +1,9 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+EAPI=5
 
 inherit webapp
-
 DESCRIPTION="GLPI is the Information Resource-Manager with an additional Administration- Interface."
 HOMEPAGE="http://www.glpi-project.org/"
 SRC_URI="https://forge.indepnet.net/attachments/download/2093/${P}.tar.gz"
@@ -15,9 +15,8 @@ DEPEND="
 	app-admin/webapp-config
 "
 RDEPEND="
-	dev-lang/php
+	dev-lang/php[mysqli]
 	virtual/mysql
-	dev-php/PEAR-MDB2_Driver_mysqli
 "
 S="${WORKDIR}/${PN}"
 
