@@ -32,7 +32,7 @@ RDEPEND="${DEPEND}
 	>=dev-perl/Net-IP-1.21
 	>=dev-perl/XML-Simple-2.12
 	virtual/perl-Compress-Raw-Zlib
-	=www-apache/mod_perl-2.0.8-r2
+	www-apache/mod_perl
 	>=www-servers/apache-1.3
 	admin? ( dev-lang/php[mysqli,xml] )
 	logrotate? ( app-admin/logrotate )
