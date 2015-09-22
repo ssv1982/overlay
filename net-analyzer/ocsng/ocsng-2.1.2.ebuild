@@ -22,7 +22,7 @@ IUSE="+comm admin logrotate soap"
 S="${WORKDIR}/${MY_P}"
 
 DEPEND="
-	dev-lang/perl
+	dev-lang/perl[-ithreads]
 	comm? ( sys-devel/make )
 "
 RDEPEND="${DEPEND}
