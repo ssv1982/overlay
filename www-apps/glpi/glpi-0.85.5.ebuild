@@ -15,7 +15,7 @@ DEPEND="
 	app-admin/webapp-config
 "
 RDEPEND="
-	dev-lang/php[mysqli]
+	dev-lang/php[mysqli,ldap]
 	virtual/mysql
 "
 S="${WORKDIR}/${PN}"
