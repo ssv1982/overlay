@@ -17,7 +17,7 @@ SRC_URI="http://launchpad.net/${MY_LPN}/stable-${MY_PV_MAJOR}/${MY_PV}/+download
 SLOT="0"
 LICENSE="GPL-2 LGPL-2"
 KEYWORDS="~amd64"
-IUSE="+comm admin logrotate soap"
+IUSE="+comm +admin logrotate soap"
 
 S="${WORKDIR}/${MY_P}"
 
