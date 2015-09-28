@@ -11,14 +11,22 @@ SRC_URI="http://forge.fusioninventory.org/attachments/download/1771/FusionInvent
 LICENSE="GPL-2" 
 SLOT="0" 
 KEYWORDS="x86 amd64" 
-IUSE="" 
+IUSE="netdiscovery "
 
-DEPEND=" 
+DEPEND="
         sys-apps/dmidecode 
         dev-perl/File-Which 
         dev-perl/IO-Socket-SSL 
+        dev-perl/Net-IP
         dev-perl/UNIVERSAL-require 
         dev-perl/XML-TreePP 
+        dev-perl/libwww-perl
+        dev-perl/Config-Tiny
+        dev-perl/text-template
+        netdiscovery? (
+    	    virtual/perl-Thread-Queue
+    	    dev-perl/Net-SNMP
+        )
 " 
 RDEPEND="${DEPEND}" 
 
