@@ -11,7 +11,7 @@ SRC_URI="http://forge.fusioninventory.org/attachments/download/1771/FusionInvent
 LICENSE="GPL-2" 
 SLOT="0" 
 KEYWORDS="x86 amd64" 
-IUSE="netdiscovery "
+IUSE="netdiscovery daemon"
 
 DEPEND="
         sys-apps/dmidecode 
@@ -26,6 +26,9 @@ DEPEND="
         netdiscovery? (
     	    virtual/perl-Thread-Queue
     	    dev-perl/Net-SNMP
+        )
+        daemon? (
+        	dev-perl/Proc-Daemon
         )
 " 
 RDEPEND="${DEPEND}" 
