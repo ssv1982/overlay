@@ -11,9 +11,10 @@ SRC_URI="http://forge.fusioninventory.org/attachments/download/1771/FusionInvent
 LICENSE="GPL-2" 
 SLOT="0" 
 KEYWORDS="x86 amd64" 
-IUSE="netdiscovery daemon"
+IUSE="+netdiscovery +daemon"
 
 DEPEND="
+        dev-lang/perl[ithreads]
         sys-apps/dmidecode 
         dev-perl/File-Which 
         dev-perl/IO-Socket-SSL 
