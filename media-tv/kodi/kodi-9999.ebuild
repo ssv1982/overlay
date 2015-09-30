@@ -49,6 +49,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/flac
 	media-libs/fontconfig
 	media-libs/freetype
+	media-sound/dcadec
 	>=media-libs/glew-1.5.6
 	media-libs/jasper
 	media-libs/jbigkit
