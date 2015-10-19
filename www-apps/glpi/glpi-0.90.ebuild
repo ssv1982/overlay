@@ -7,7 +7,7 @@ inherit webapp
 DESCRIPTION="GLPI is the Information Resource-Manager with an additional Administration- Interface."
 HOMEPAGE="http://www.glpi-project.org/"
 #SRC_URI="https://forge.indepnet.net/attachments/download/2093/${P}.tar.gz"
-SRC_URI="https://github.com/glpi-project/glpi/releases/download/0.90-RC1/glpi-0.90-RC1.tar.gz"
+SRC_URI="https://github.com/glpi-project/glpi/releases/download/0.90/glpi-0.90.tar.gz"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
