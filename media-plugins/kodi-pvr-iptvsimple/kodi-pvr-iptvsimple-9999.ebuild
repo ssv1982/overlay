@@ -16,7 +16,8 @@ SLOT="0"
 IUSE=""
 
 DEPEND="media-plugins/kodi-platform
-		media-tv/kodi"
+		media-tv/kodi
+		dev-libs/libplatform"
 #RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${PN}
