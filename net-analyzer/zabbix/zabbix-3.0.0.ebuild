@@ -35,7 +35,8 @@ COMMON_DEPEND="snmp? ( net-analyzer/net-snmp )
 	openipmi? ( sys-libs/openipmi )
 	ssh? ( net-libs/libssh2 )
 	java? ( virtual/jdk:* )
-	odbc? ( dev-db/unixODBC )"
+	odbc? ( dev-db/unixODBC )
+	net-misc/curl"
 
 RDEPEND="${COMMON_DEPEND}
 	proxy? ( <=net-analyzer/fping-2.9 )
