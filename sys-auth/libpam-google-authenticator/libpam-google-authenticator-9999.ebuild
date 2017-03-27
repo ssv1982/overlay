@@ -6,8 +6,8 @@ EAPI=5
 inherit git-r3
 
 DESCRIPTION="Google Authentiator PAM plugin"
-HOMEPAGE="https://github.com/google/google-authenticator"
-EGIT_REPO_URI="https://github.com/google/google-authenticator.git"
+HOMEPAGE="https://github.com/google/google-authenticator-libpam/"
+EGIT_REPO_URI="https://github.com/google/google-authenticator-libpam.git"
 
 #LICENSE="Apache-2.0"
 SLOT="0"
