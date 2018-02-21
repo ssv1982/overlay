@@ -1,0 +1,12 @@
+#xbmc
+media-tv/xbmc webserver -udev pvr mysql
+media-tv/kodi webserver -udev mysql
+
+#deluge
+net-p2p/deluge webinterface
+
+#proftpd
+net-ftp/proftpd -ssl authfile
+
+#zabbix
+#net-analyzer/zabbix server postgres agent frontend -ipv6 snmp

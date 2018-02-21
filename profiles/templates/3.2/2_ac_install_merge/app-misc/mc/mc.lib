@@ -1,0 +1,8 @@
+# Calculate append=after path=/usr/share/mc
+
+#?os_linux_shortname==Desktop-ssv#
+
+[terminal:screen-256color]
+copy=xterm
+
+#os_linux_shortname#
