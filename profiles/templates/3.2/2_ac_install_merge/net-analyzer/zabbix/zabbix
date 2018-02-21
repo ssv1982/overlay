@@ -1,5 +1,0 @@
-# Calculate path=/etc/sudoers.d chmod=0440
-
-zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl -A /dev/sd?
-zabbix ALL=(ALL) NOPASSWD: /usr/sbin/smartctl -i /dev/sd?
-zabbix ALL=(ALL) NOPASSWD: /usr/bin/perl /etc/zabbix/scripts/nvidia.pl
